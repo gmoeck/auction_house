@@ -1,0 +1,9 @@
+<div id="highest_bidder"><%= @auction.highest_bidder %></div>
+<div id="highest_bid"><%= number_to_currency(@auction.max_bid) %></div>
+<%= form_tag(bid_path, :method => :put) do %>
+  <%= label_tag :bidder, "Bidder:" %>
+  <%= text_field_tag :bidder %>
+  <%= label_tag :maximum_bid, "Maximum Bid:" %>
+  <%= text_field_tag :maximum_bid %>
+  <%= submit_tag "Submit" %>
+<% end %>
