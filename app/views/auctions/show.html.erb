@@ -1,10 +1,22 @@
-<div id="auction_status"><%= @view_model.status_message %></div>
-<div id="highest_bidder"><%= @view_model.highest_bidder %></div>
-<div id="highest_bid"><%= number_to_currency(@view_model.max_bid) %></div>
-<%= form_tag(bid_path, :method => :put) do %>
-  <%= label_tag :bidder, "Bidder:" %>
-  <%= text_field_tag :bidder %>
-  <%= label_tag :maximum_bid, "Maximum Bid:" %>
-  <%= text_field_tag :maximum_bid %>
-  <%= submit_tag "Submit" %>
-<% end %>
+<div class="container">
+  <% if @view_model.has_status_message? %>
+    <div id="auction_status" class="alert"><%= @view_model.status_message %></div>
+  <% end %>
+  <div class="left division">
+    <div class="highest_bidder_section section">
+      Highest Bidder: <span id="highest_bidder"><%= @view_model.highest_bidder %></span>
+    </div>
+    <div class="highest_bid_section section">
+      Highest Bid: <span id="highest_bid"><%= number_to_currency(@view_model.max_bid) %></span>
+    </div>
+  </div>
+  <div class="right division">
+    <%= form_tag(bid_path, :method => :put) do %>
+      <%= label_tag :bidder, "Bidder:" %>
+      <%= text_field_tag :bidder %>
+      <%= label_tag :maximum_bid, "Maximum Bid:" %>
+      <%= text_field_tag :maximum_bid %>
+      <%= submit_tag "Submit" %>
+    <% end %>
+  </div>
+</div>

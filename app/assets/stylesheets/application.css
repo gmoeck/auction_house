@@ -5,3 +5,45 @@
  *= require_self
  *= require_tree . 
 */
+.container {
+  margin: 0px auto;
+  width: 960px;
+  padding-top: 50px;
+}
+
+.container .division {
+  background: #F7F7F7;
+  border: 1px solid #E5E5E5;
+}
+
+.container .left {
+  float: left;
+  width: 480px;
+}
+
+.container .left .section {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+.container .right {
+  float: right;
+  padding: 10px;
+  width: 447px;
+}
+
+.container .alert {
+  background-color: #D8E7FA;
+  border-color: #9DBFEA;
+  color: #00357B;
+  border: 1px solid;
+  clear: both;
+  margin-bottom: 9px;
+  margin-top: 10px;
+  padding: 10px 10px 10px 35px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
