@@ -1,4 +1,4 @@
-require_relative '../domain/web/web_auction_request_translator'
+require_relative '../domain/web/auction_request_translator'
 
 describe AuctionHouse::WebAuctionRequestTranslator do
   before(:each) do

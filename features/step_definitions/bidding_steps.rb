@@ -12,3 +12,11 @@ end
 Then /^"([^"]*)" should be the highest bid$/ do |bid|
   find('#highest_bid').text.should include(bid)
 end
+
+Then /^"([^"]*)" should be notified that they are the highest bidder$/ do |bidder|
+  find('#auction_status').text.should include("Bid Accepted. You are now the highest bidder.")
+end
+
+Then /^"([^"]*)" should be notified that their bid failed$/ do |bidder|
+  find('#auction_status').text.should include("Bid Failed.")
+end
