@@ -4,7 +4,8 @@ Dir[Rails.root + 'domain/**/*.rb'].each { |file| require file }
 module AuctionHouse
   module Domain
     @web_auction_response = AuctionHouse::WebAuctionResponse.new
-    @web_auction_request_translator = AuctionHouse::WebAuctionRequestTranslator.new(@web_auction_response)
+    @auction = AuctionHouse::Auction.new(@web_auction_response)
+    @web_auction_request_translator = AuctionHouse::WebAuctionRequestTranslator.new(@auction)
 
     def self.auction_response
       @web_auction_response

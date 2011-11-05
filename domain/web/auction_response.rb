@@ -1,15 +1,25 @@
+require_relative '../auction_state'
+
 module AuctionHouse
   class WebAuctionResponse
-    attr_accessor :highest_bidder, :max_bid
-
     def initialize(params={})
-      @highest_bidder = ''
-      @max_bid = 0.0
+      @auction_state = AuctionHouse::AuctionState.new('', 0.00)
     end
 
-    def bid(bidder, amount)
-      @highest_bidder = bidder
-      @max_bid = amount
+    def bid_successful(auction_state)
+      @auction_state = auction_state
+    end
+
+    def bid_failed(auction_state)
+      @auction_state = auction_state
+    end
+
+    def highest_bidder
+      @auction_state.highest_bidder
+    end
+
+    def max_bid
+      @auction_state.max_bid
     end
   end
 end

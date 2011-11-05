@@ -5,7 +5,7 @@ module AuctionHouse
     end
 
     def process_request(parameters)
-      @auction_event_listener.bid(parameters[:bidder], parameters[:maximum_bid]) if parameters[:type] == 'update'
+      @auction_event_listener.bid(parameters[:bidder], parameters[:maximum_bid].to_f) if parameters[:type] == 'update'
     end
   end
 end

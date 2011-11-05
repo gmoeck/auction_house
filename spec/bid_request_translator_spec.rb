@@ -1,4 +1,4 @@
-require_relative '../domain/web/bid_request_translator'
+require_relative '../domain/web/web_auction_request_translator'
 
 describe AuctionHouse::WebAuctionRequestTranslator do
   before(:each) do
@@ -7,7 +7,7 @@ describe AuctionHouse::WebAuctionRequestTranslator do
   end
 
   it "notifies the auction event listener of new bids" do
-    parameters = {:type => 'update', :bidder => "Greg", :maximum_bid => 15.00}
+    parameters = {:type => 'update', :bidder => "Greg", :maximum_bid => '15.00'}
 
     @auction_event_listener.should_receive(:bid).with("Greg", 15.00)
 
