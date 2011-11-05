@@ -15,8 +15,6 @@ describe AuctionHouse::WebAuctionViewModel do
   end
 
   describe "when the view model is notified of a successful bid" do
-    let(:current_high_bidder) { "" }
-    let(:current_max_bid)     { 0.00 }
     before { @view_model.bid_successful }
 
     subject { @view_model }
@@ -26,8 +24,6 @@ describe AuctionHouse::WebAuctionViewModel do
   end
 
   describe "when the view model is notified of a failed bid" do
-    let(:current_high_bidder) { "" }
-    let(:current_max_bid)     { 0.00 }
     before { @view_model.bid_failed }
 
     subject { @view_model }
@@ -39,8 +35,8 @@ describe AuctionHouse::WebAuctionViewModel do
   describe "when the view model is notified of the auction state changing" do
     let(:new_high_bidder) { "Joe" }
     let(:new_max_bid) { 15.00 }
-    let(:new_auction_state) { AuctionHouse::AuctionState.new(new_high_bidder, new_max_bid) }
-    before { @view_model.auction_state_updated(new_auction_state) }
+    let(:new_highest_bid) { AuctionHouse::Bid.new(new_high_bidder, new_max_bid) }
+    before { @view_model.highest_bid_updated(new_highest_bid) }
     subject { @view_model }
 
     its(:highest_bidder) { should == new_high_bidder }

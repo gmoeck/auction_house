@@ -1,9 +1,9 @@
-require_relative '../auction_state'
+require_relative '../bid'
 
 module AuctionHouse
   class WebAuctionViewModel
     def initialize
-      @auction_state = AuctionHouse::AuctionState.new('', 0.00)
+      @highest_bid = AuctionHouse::Bid.new('', 0.00)
       @status_message = ''
     end
 
@@ -15,8 +15,8 @@ module AuctionHouse
       @status_message = 'Bid Failed.'
     end
 
-    def auction_state_updated(auction_state)
-      @auction_state = auction_state
+    def highest_bid_updated(highest_bid)
+      @highest_bid = highest_bid
     end
 
     def status_message
@@ -28,11 +28,11 @@ module AuctionHouse
     end
 
     def highest_bidder
-      @auction_state.highest_bidder
+      @highest_bid.bidder
     end
 
     def max_bid
-      @auction_state.max_bid
+      @highest_bid.amount
     end
   end
 end

@@ -17,7 +17,7 @@ describe AuctionHouse::BidValidator do
   it "reports the bid was not successful when a bid arrives that is less than the current max bid" do
     @bid_listener.should_receive(:bid_failed)
 
-    @bid_validator.auction_state_updated(AuctionHouse::AuctionState.new("Joe", 15.00))
+    @bid_validator.highest_bid_updated(AuctionHouse::Bid.new("Joe", 15.00))
     @bid_validator.bid("Jane", 14.50)
   end
 end

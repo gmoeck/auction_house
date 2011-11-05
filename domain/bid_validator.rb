@@ -6,8 +6,8 @@ module AuctionHouse
       @highest_bid = 0.0
     end
 
-    def auction_state_updated(max_bid)
-      @highest_bid = max_bid.max_bid
+    def highest_bid_updated(max_bid)
+      @highest_bid = max_bid.amount
     end
 
     def bid(bidder, amount)
