@@ -20,3 +20,7 @@ end
 Then /^"([^"]*)" should be notified that their bid failed$/ do |bidder|
   find('#auction_status').text.should include("Bid Failed.")
 end
+
+Then /^"([^"]*)" should be notified that their bid was successful, but that they were outbid$/ do |arg1|
+  find('#auction_status').text.should include("Bid Accepted, but you were outbid.")
+end

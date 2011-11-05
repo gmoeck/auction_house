@@ -5,8 +5,11 @@ module AuctionHouse
   module Domain
     def self.setup
       @web_auction_view_model = AuctionHouse::WebAuctionViewModel.new
-      @auction = AuctionHouse::Auction.new(@web_auction_view_model)
-      @web_auction_request_translator = AuctionHouse::WebAuctionRequestTranslator.new(@auction)
+      @auction = AuctionHouse::Auction.new
+      @bid_validator = AuctionHouse::BidValidator.new(@auction, @web_auction_view_model)
+      @auction.add_listener(@bid_validator)
+      @auction.add_listener(@web_auction_view_model)
+      @web_auction_request_translator = AuctionHouse::WebAuctionRequestTranslator.new(@bid_validator)
     end
 
     def self.reset

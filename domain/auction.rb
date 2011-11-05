@@ -2,28 +2,23 @@ require_relative 'auction_state'
 
 module AuctionHouse
   class Auction
-    def initialize(auction_listener)
-      @auction_listener = auction_listener
+    def initialize
+      @auction_listeners = []
       @highest_current_bid = 0.0
       @current_high_bidder = ''
     end
 
+    def add_listener(listener)
+      @auction_listeners << listener
+    end
+
     def bid(bidder, amount)
-      if amount > @highest_current_bid
-        @auction_listener.bid_successful
-        change_state(bidder, bid_amount(amount))
-      else
-        @auction_listener.bid_failed
-      end
+      @current_high_bidder = bidder
+      @highest_current_bid = bid_amount(amount)
+      @auction_listeners.each {|listener| listener.auction_state_updated(AuctionHouse::AuctionState.new(@current_high_bidder, @highest_current_bid))}
     end
 
     private
-
-    def change_state(bidder, amount)
-      @current_high_bidder = bidder
-      @highest_current_bid = amount
-      @auction_listener.auction_state_updated(AuctionHouse::AuctionState.new(@current_high_bidder, @highest_current_bid))
-    end
 
     def bid_amount(amount)
       @highest_current_bid == 0.0 ? amount : @highest_current_bid + bid_increment
