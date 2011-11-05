@@ -10,12 +10,27 @@ module AuctionHouse
 
     def bid(bidder, amount)
       if amount > @highest_current_bid
-        @highest_current_bid = amount
-        @current_high_bidder = bidder
-        @auction_listener.bid_successful(AuctionHouse::AuctionState.new(bidder,amount))
+        @auction_listener.bid_successful
+        change_state(bidder, bid_amount(amount))
       else
-        @auction_listener.bid_failed(AuctionHouse::AuctionState.new(@current_high_bidder, @highest_current_bid))
+        @auction_listener.bid_failed
       end
+    end
+
+    private
+
+    def change_state(bidder, amount)
+      @current_high_bidder = bidder
+      @highest_current_bid = amount
+      @auction_listener.auction_state_updated(AuctionHouse::AuctionState.new(@current_high_bidder, @highest_current_bid))
+    end
+
+    def bid_amount(amount)
+      @highest_current_bid == 0.0 ? amount : @highest_current_bid + bid_increment
+    end
+
+    def bid_increment
+      0.50
     end
   end
 end
