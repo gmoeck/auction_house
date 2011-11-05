@@ -1,19 +1,14 @@
-class Auction
-  attr_accessor :highest_bidder, :max_bid
-
-  def initialize(params={})
-    @highest_bidder = params[:highest_bidder]
-    @max_bid = params[:max_bid]
-  end
-end
-
 class AuctionsController < ApplicationController
   def show
-    @auction = Auction.new
+    params[:type] = 'show'
+    AuctionHouse::Domain.auction_request_translator.process_request(params)
+    @auction = AuctionHouse::Domain.auction_response
   end
 
   def update
-    @auction = Auction.new(:highest_bidder => params[:bidder], :max_bid => params[:maximum_bid])
+    params[:type] = 'update'
+    AuctionHouse::Domain.auction_request_translator.process_request(params)
+    @auction = AuctionHouse::Domain.auction_response
     render :action => :show
   end
 end
