@@ -1,9 +1,9 @@
-require_relative '../domain/bid_calculator'
+require_relative '../domain/maximum_bid_tracker'
 
-describe AuctionHouse::BidCalculator do
+describe AuctionHouse::MaximumBidTracker do
   before(:each) do
     @bid_processor = double('bid processor')
-    @bid_calculator = AuctionHouse::BidCalculator.new(@bid_processor)
+    @bid_calculator = AuctionHouse::MaximumBidTracker.new(@bid_processor)
   end
 
   it "bids whatever the maximum bid that was offered when no bids have yet been made" do
@@ -12,39 +12,40 @@ describe AuctionHouse::BidCalculator do
     @bid_calculator.bid("Joe", 15.00)
   end
 
-  it "bids 0.05 over the current price when the current price is between 0.01 and 0.99" do
-    @current_bid_amount = 0.01
-    @increment = 0.05
-    @bid_calculator.highest_bid_updated(AuctionHouse::Bid.new("Jane", @current_bid_amount))
-    @bid_processor.should_receive(:bid).with("Joe", @current_bid_amount + @increment)
+  it "bids exactly the maximum offered when the maximum offered is more than the current bid, but less than the minimum increment" do
+    @bid_processor.should_receive(:bid).with("Joe", 15.00)
+    @bid_processor.should_receive(:bid).with("Jane", 15.01)
 
-    @bid_calculator.bid("Joe", nil)
+    @bid_calculator.bid("Joe", 15.00)
+    @bid_calculator.bid("Jane", 15.01)
   end
 
-  it "bids 0.25 over the current price when the current price is between 1.00 and 4.99" do
-    @current_bid_amount = 1.00
-    @increment = 0.25
-    @bid_calculator.highest_bid_updated(AuctionHouse::Bid.new("Jane", @current_bid_amount))
-    @bid_processor.should_receive(:bid).with("Joe", @current_bid_amount + @increment)
+  it "bids only the minimum increment over the current bid when a different person bids higher than the current bid" do
+    @bid_processor.should_receive(:bid).with("Joe", 15.00)
+    @bid_processor.should_receive(:bid).with("Jane", 15.50)
 
-    @bid_calculator.bid("Joe", nil)
+    @bid_calculator.bid("Joe", 15.00)
+    @bid_calculator.bid("Jane", 20.00)
   end
 
-  it "bids 0.50 over the current price when the current price is between 5.00 and 24.99" do
-    @current_bid_amount = 18.00
-    @increment = 0.50
-    @bid_calculator.highest_bid_updated(AuctionHouse::Bid.new("Jane", @current_bid_amount))
-    @bid_processor.should_receive(:bid).with("Joe", @current_bid_amount + @increment)
+  it "bids the minimum increment over the current max bid when a different person bids higher than the current max bid" do
+    @bid_processor.should_receive(:bid).with("Joe", 15.00)
+    @bid_processor.should_receive(:bid).with("Jane", 15.50)
+    @bid_processor.should_receive(:bid).with("Joe", 20.50)
 
-    @bid_calculator.bid("Joe", nil)
+    @bid_calculator.bid("Joe", 15.00)
+    @bid_calculator.bid("Jane", 20.00)
+    @bid_calculator.bid("Joe", 25.00)
   end
 
-  it "bids 1.00 over the current price for anything at or above 25.00" do
-    @current_bid_amount = 27.00
-    @increment = 1.00
-    @bid_calculator.highest_bid_updated(AuctionHouse::Bid.new("Jane", @current_bid_amount))
-    @bid_processor.should_receive(:bid).with("Joe", @current_bid_amount + @increment)
+  it "rebids for the person who has a max offer if an offer is made that is less than the max offer, but more than the current offer" do
+    @bid_processor.should_receive(:bid).with("Joe", 15.00).ordered
+    @bid_processor.should_receive(:bid).with("Jane", 15.50).ordered
+    @bid_processor.should_receive(:bid).with("Joe", 20.00).ordered
+    @bid_processor.should_receive(:bid).with("Jane", 20.50).ordered
 
-    @bid_calculator.bid("Joe", nil)
+    @bid_calculator.bid("Joe", 15.00)
+    @bid_calculator.bid("Jane", 40.00)
+    @bid_calculator.bid("Joe", 20.00)
   end
 end

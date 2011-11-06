@@ -6,10 +6,9 @@ module AuctionHouse
     def self.setup
       @web_auction_view_model = AuctionHouse::WebAuctionViewModel.new
       @auction = AuctionHouse::Auction.new
-      @bid_calculator = AuctionHouse::BidCalculator.new(@auction)
+      @bid_calculator = AuctionHouse::MaximumBidTracker.new(@auction)
       @bid_validator = AuctionHouse::BidValidator.new(@bid_calculator, @web_auction_view_model)
       @auction.add_listener(@bid_validator)
-      @auction.add_listener(@bid_calculator)
       @auction.add_listener(@web_auction_view_model)
       @web_auction_request_translator = AuctionHouse::WebAuctionRequestTranslator.new(@bid_validator)
     end

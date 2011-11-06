@@ -24,8 +24,7 @@ Feature: Bidding on an auction item
      And "Jane" should be notified that they are the highest bidder
     Then "Jane" should be the highest bidder
      And "15.50" should be the highest bid
-#    When "Joe" bids "18.00"
-##    Then "Joe" should be notified that their bid was successful, but that they were outbid
-#     And "Jane" should be the highest bidder
-#     And "18.50" should be the highest bid
-
+    When "Joe" bids "18.00"
+#    Then "Joe" should be notified that their bid was successful, but that they were outbid
+     And "Jane" should be the highest bidder
+     And "18.50" should be the highest bid
